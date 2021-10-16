@@ -1,0 +1,16 @@
+<html>
+ <body>
+  <h1>@@PROJECT@@ Project APT Repository</h1>
+  <dl>
+   <dt>Add this repository to /etc/apt/sources.list.d/@@project@@.list:
+    <dd><kbd>echo "deb http://@@apt.host@@/  production main non-free" > /etc/apt/sources.list.d/@@project@@.list<br>
+echo "deb http://@@apt.host@@/  staging main non-free" >> /etc/apt/sources.list.d/@@project@@.list<br>
+echo "deb http://@@apt.host@@/  prod-experimental main non-free" >> /etc/apt/sources.list.d/@@project@@.list<br></kbd>
+echo "deb http://@@apt.host@@/  experimental main non-free" >> /etc/apt/sources.list.d/@@project@@.list<br></kbd>
+   <dt>Download and import verification pgp key:
+    <dd><kbd>wget -q -O - http://@@apt.host@@/@@project@@.gpg | sudo apt-key add -</kbd>
+   <dt>Update APT:
+    <dd><kbd>apt-get update</kbd>
+  </dl>
+ </body>
+</html>
