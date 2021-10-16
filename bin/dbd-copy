@@ -1,0 +1,33 @@
+#!/bin/sh -e
+
+# Copy the given DEB package from one distribution to another in APT repository.
+
+USAGE="Usage: $0 <sourcename> [-f | --from <from>] [-t | --to <target>]"
+
+if [ -z "$1"  ]; then
+    echo $USAGE 1>&2
+    exit 1
+fi
+
+i=1
+for a in "$@"; do
+    i=$((i + 1))
+    Z="$i"
+    case "$a" in
+        -f | --from)
+            eval "FROM=\$$Z"
+            ;;
+        -t | --to)
+            eval "TARGET_SUITE=\$$Z"
+            ;;
+    esac
+done
+
+if [ -z "$FROM" -o -z "$TARGET_SUITE"  ]; then
+    echo $USAGE 1>&2
+    exit 1
+fi
+
+sudo -n /usr/bin/reprepro \
+    --basedir /var/www/dbd-apt \
+    copy "$TARGET_SUITE" "$FROM" "$1"
