@@ -6,7 +6,7 @@
 # signing, if configured).
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 [-t | --target-suite <target>] <filename.changes>" 1>&2
+    echo "Usage: $0 <filename.changes> [-t | --target-suite <target>]" 1>&2
     exit 1
 fi
 
@@ -16,7 +16,7 @@ for a in "$@"; do
     Z="$i"
     case "$a" in
         -t | --target-suite)
-            TARGET_SUITE=${!Z}
+            eval "TARGET_SUITE=\$$Z"
             ;;
     esac
 done
