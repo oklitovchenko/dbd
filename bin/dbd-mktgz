@@ -5,7 +5,12 @@
 # package build.
 
 [ -z "$DBD_CONFIG" ] && DBD_CONFIG="/etc/dbd/dbd.conf"
+export DBD_CONFIG
+
 . "$DBD_CONFIG"
+for c in `find $DBD_INCLUDE -name "*.conf"`; do
+    . "$c"
+done
 
 # Generate pristine chroot
 sudo -n /usr/sbin/pbuilder \
@@ -13,7 +18,13 @@ sudo -n /usr/sbin/pbuilder \
     --debootstrapopts --include=debhelper,fakeroot \
     --configfile "$DBD_CONFIG"
 
-# Setup the chroot
+cat $DBD_INIT_SCRIPT | sed "s/\$1/$APT_HOST/g" | \
+    sed "s/\$2/$APT_KEY/g" > /tmp/init.sh
+chmod +x /tmp/init.sh
+
+# Make vital @@Project@@ settings to the chroot
 sudo -n /usr/sbin/pbuilder --execute --save-after-exec \
     --configfile "$DBD_CONFIG" \
-    "$DBD_INIT_SCRIPT"
+    "/tmp/init.sh"
+
+rm /tmp/init.sh

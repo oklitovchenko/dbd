@@ -11,8 +11,13 @@ if [ -z "$1" ]; then
 fi
 
 [ -z "$DBD_CONFIG" ] && DBD_CONFIG="/etc/dbd/dbd.conf"
+export DBD_CONFIG
+
 . "$DBD_CONFIG"
+for c in `find $DBD_INCLUDE -name "*.conf"`; do
+    . "$c"
+done
 
 sudo -n /usr/bin/reprepro \
     --basedir /var/www/dbd-apt \
-    include "$DISTRIBUTION" "$1"
+    include "$TARGET_SUITE" "$1"

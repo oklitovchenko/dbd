@@ -6,7 +6,9 @@
 export DBD_CONFIG
 
 . "$DBD_CONFIG"
-
+for c in `find $DBD_INCLUDE -name "*.conf"`; do
+    . "$c"
+done
 # If the base root FS tarball is not created yet, create it
 [ -f "$BASETGZ" ] || dbd-mktgz
 
