@@ -6,12 +6,29 @@
 # signing, if configured).
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <packagename>" 1>&2
+    echo "Usage: $0 [-t | --target-suite <targetsuite>] <packagename>" 1>&2
     exit 1
 fi
 
 [ -z "$DBD_CONFIG" ] && DBD_CONFIG="/etc/dbd/dbd.conf"
+export DBD_CONFIG
+
 . "$DBD_CONFIG"
+for c in `find $DBD_INCLUDE -name "*.conf"`; do
+    . "$c"
+done
+
+i=1
+for a in "$@"; do
+    i=$((i + 1))
+    Z="$i"
+    case "$a" in
+        -t | --target-suite)
+            TARGET_SUITE=${!Z}
+            ;;
+    esac
+done
+
 sudo -n /usr/bin/reprepro \
     --basedir /var/www/dbd-apt \
-    remove "$DISTRIBUTION" "$1"
+    remove "$TARGET_SUITE" "$1"
