@@ -1,0 +1,11 @@
+etc/sudoers.d/dbd-build-node.dbd /etc/sudoers.d
+etc/dbd/dbd.conf /etc/dbd
+etc/dbd/dbd-production.conf /etc/dbd
+etc/dbd/dbd-experimental.conf /etc/dbd
+hooks/D99apt-get-update /var/lib/dbd/hooks
+bin/dbd-mktgz /usr/bin
+bin/dbd-upgrade /usr/bin
+bin/dbd-login /usr/bin
+bin/dbd-login-nosave /usr/bin
+bin/dbd-build /usr/bin
+scripts/*.sh /usr/share/dbd

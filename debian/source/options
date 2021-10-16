@@ -1,0 +1,3 @@
+tar-ignore = "*~"
+tar-ignore = "*.sw[op]"
+tar-ignore = ".*"

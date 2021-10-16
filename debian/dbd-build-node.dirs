@@ -1,0 +1,5 @@
+/var/lib/dbd/aptcache
+/var/lib/dbd/build
+/etc/dbd/normal.d/
+/etc/dbd/experimental.d/
+/etc/dbd/production.d/

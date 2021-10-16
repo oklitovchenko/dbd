@@ -1,0 +1,23 @@
+# Sudoers rules for dbd tools
+
+# Allow chroot creation
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --create --debootstrapopts --include=debhelper\,fakeroot --configfile /etc/dbd/dbd.conf
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --create --debootstrapopts --include=debhelper\,fakeroot --configfile /etc/dbd/dbd-production.conf
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --create --debootstrapopts --include=debhelper\,fakeroot --configfile /etc/dbd/dbd-experimental.conf
+# ...and initial setup
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd.conf /usr/share/dbd/init-normal.sh
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd-production.conf /usr/share/dbd/init-production.sh
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd-experimental.conf /usr/share/dbd/init-experimental.sh
+
+# Allow to build packages
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --build --debbuildopts -sa --configfile /etc/dbd/dbd.conf *.dsc
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --build --debbuildopts -sa --configfile /etc/dbd/dbd-production.conf *.dsc
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --build --debbuildopts -sa --configfile /etc/dbd/dbd-experimental.conf *.dsc
+
+# Allow to login inside the chroots
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd.conf --save-after-login
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-production.conf --save-after-login
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-experimental.conf --save-after-login
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd.conf
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-production.conf
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-experimental.conf

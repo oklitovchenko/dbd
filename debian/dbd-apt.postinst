@@ -1,0 +1,109 @@
+#!/bin/sh -e
+
+case "$1" in
+    configure)
+        if [ ! -f /etc/dbd/apt/reprepro/distributions ]; then
+            echo "------------------------"
+            while true; do
+                read -p "Set project name (default: [MYPROJECT]): " PROJECT_NAME
+                read -p "Set name for APT host (default: [apt.myproject.my]): " APT_HOST
+                read -p "Set name for production repository (default: [lyubov]) " P_NAME
+                read -p "Set name for prod experimental repository (default: [nadezhda]) " X_NAME
+                read -p "Set name for staging repository (default: [vera]) " S_NAME
+                read -p "Set name for experimental repository (default: [sofiia]) " E_NAME
+
+                [ -z "$PROJECT_NAME" ] && PROJECT_NAME="MYPROJECT"
+                [ -z "$APT_HOST" ] && APT_HOST="apt.myproject.my"
+                [ -z "$P_NAME" ] && P_NAME="lyubov"
+                [ -z "$X_NAME" ] && X_NAME="nadezhda"
+                [ -z "$S_NAME" ] && S_NAME="vera"
+                [ -z "$E_NAME" ] && E_NAME="sofiia"
+
+                echo "Project name is [$PROJECT_NAME]"
+                echo "APT host is [$APT_HOST]"
+                echo "Production repository name is [$P_NAME]"
+                echo "Prod experimental repository name is [$X_NAME]"
+                echo "Staging repository name is [$S_NAME]"
+                echo "Experimental repository name is [$E_NAME]"
+                yn="N"
+                read -p "Continue? [y/N] " yn
+                case $yn in
+                    [Yy]* ) break;;
+                    [Nn]* ) continue;;
+                    * ) continue;;
+                esac
+            done
+
+            cp /etc/nginx/sites-available/dbd.default /etc/nginx/sites-available/dbd
+            sed -i "s/@@apt.host@@/$APT_HOST/g" /etc/nginx/sites-available/dbd
+            ln -s /etc/nginx/sites-available/dbd /etc/nginx/sites-enabled
+            cp /var/www/dbd-apt/index.html.default /var/www/dbd-apt/index.html
+            sed -i "s/@@apt.host@@/$APT_HOST/g" /var/www/dbd-apt/index.html
+            sed -i "s/@@PROJECT@@/``$PROJECT_NAME``/g" /var/www/dbd-apt/index.html
+            project_name=$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]')
+            sed -i "s/@@project@@/$project_name/g" /var/www/dbd-apt/index.html
+            ln -sf /etc/dbd/apt /var/www/dbd-apt/conf
+            cp /etc/dbd/apt/options.default /etc/dbd/apt/options
+
+            while true; do
+                KEYS=$(gpg --list-secret-keys --keyid-format SHORT)
+                if [ -z "$KEYS" ]; then
+                    gpg --full-gen-key
+                    SIG=$(gpg --list-secret-keys --keyid-format SHORT | \
+                        grep sec | awk '{print$2}' | cut -d"/" -f2)
+                    break
+                fi
+                echo "You have next GPG keys:"
+                echo "$KEYS"
+                echo "------------------------"
+                read -p "Do you need to create new key? [y/N] " yn
+                case $yn in
+                    [Yy]* )
+                        gpg --full-gen-key
+                        SIG=$(gpg --list-secret-keys --keyid-format SHORT | \
+                            grep sec | tail -1 | awk '{print$2}' | cut -d"/" -f2)
+                        break
+                        ;;
+                    * )
+                        echo "To set secret key chose short key ID from list above."
+                        echo " Just copy-paste ID from section you chosen as shown below:"
+                        echo "------------------------"
+                        echo "sec   rsa3072/FFFFFFFF 2021-10-13 [SC]"
+                        echo "              ^^^^^^^^"
+                        echo "------------------------"
+                        read -p "Set the secret key ID: " SIG
+                        gpg --list-secret-keys --keyid-format SHORT | \
+                            grep $SIG > /dev/null 2>&1 && break
+                        ;;
+                esac
+            done
+
+            cat /etc/dbd/apt/distributions.default | sed "s/@@SignWith@@/$SIG/g" > /etc/dbd/apt/distributions
+            gpg --armor --output /var/www/dbd-apt/$project_name.gpg --export $SIG
+
+            sed -i "s/@@production@@/$P_NAME/g" /etc/dbd/apt/distributions
+            sed -i "s/@@prod-experimental@@/$X_NAME/g" /etc/dbd/apt/distributions
+            sed -i "s/@@staging@@/$S_NAME/g" /etc/dbd/apt/distributions
+            sed -i "s/@@experimental@@/$E_NAME/g" /etc/dbd/apt/distributions
+            sed -i "s/@@PROJECT@@/$PROJECT_NAME/g" /etc/dbd/apt/distributions
+
+            chmod 0770 /etc/dbd/apt
+            reprepro --basedir /var/www/dbd-apt --delete createsymlinks
+
+            nginx -s reload
+        fi
+        ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        echo "postinst called with unknown argument '$1'" >&2
+        exit 1
+        ;;
+esac
+
+# dh_installdeb will replace this with shell code automatically
+# generated by other debhelper scripts.
+
+#DEBHELPER#
+
+exit 0
