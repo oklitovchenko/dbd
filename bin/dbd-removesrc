@@ -7,17 +7,9 @@
 # signing, if configured).
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 [-t | --target-suite <targetsuite>] <packagename>" 1>&2
+    echo "Usage: $0 [-t | --target-suite <target>] <packagename>" 1>&2
     exit 1
 fi
-
-[ -z "$DBD_CONFIG" ] && DBD_CONFIG="/etc/dbd/dbd.conf"
-export DBD_CONFIG
-
-. "$DBD_CONFIG"
-for c in `find $DBD_INCLUDE -name "*.conf"`; do
-    . "$c"
-done
 
 i=1
 for a in "$@"; do
@@ -25,10 +17,20 @@ for a in "$@"; do
     Z="$i"
     case "$a" in
         -t | --target-suite)
-            TARGET_SUITE=${!Z}
+           TARGET_SUITE=${!Z}
             ;;
     esac
 done
+
+if [ -z "$TARGET_SUITE" ]; then
+    [ -z "$DBD_CONFIG" ] && DBD_CONFIG="/etc/dbd/dbd.conf"
+    export DBD_CONFIG
+
+    . "$DBD_CONFIG"
+    for c in `find $DBD_INCLUDE -name "*.conf"`; do
+        . "$c"
+    done
+fi
 
 sudo -n /usr/bin/reprepro \
     --basedir /var/www/dbd-apt \
