@@ -1,3 +1,19 @@
+dbd (2.0.0) unstable; urgency=low
+
+  * Add contributor's copyright (BSD License)
+  * Refactor to split on two package: apt node and build node
+  * Refactor scripts to remove from apt procedure
+  * Refactor scripts to build process
+  * Refactor reprepro configs to use it as templates
+  * Refactor httpd configs (for nginx)
+  * Refactor main dbd config and add alternative configs
+  * Refactor scripts to change initialization of tarball procedure
+  * Remove apache2 config
+  * Add search scripts
+  * Add more ignores into .gitignore
+
+ -- Oleksii Klitovchenko <oleksii.klitovchenko@gmail.com>  Sat, 16 Oct 2021 16:31:28 +0300
+
 dbd (1.1.0) unstable; urgency=low
 
   * Make tarball creation fully automated
