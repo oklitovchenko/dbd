@@ -3,7 +3,7 @@ server {
    root /var/www/dbd-apt;
    index index.html;
    access_log /var/log/nginx/dbd-apt.log;
-   location ~ /(conf|db|lists|logs) { deny all; return 404; }
+   location ~ /(conf|db|lists|logs)/ { deny all; return 404; }
    location / {
       try_files $uri $uri/ /index.html;
    }
