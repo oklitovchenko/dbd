@@ -1,0 +1,14 @@
+#!/bin/sh
+
+## Search source package name for queried binary package
+
+if [ -z "$1" -o -z "$2" -o "$1" = "-h" -o "$1" = "--help" ]; then
+    echo "Usage:" 1>&2
+    echo "  $0 -h/--help        - show this memo" 1>&2
+    echo "  $0 REPOSITORY PACKAGE" 1>&2
+    exit 1
+fi
+
+zcat "/var/www/dbd-apt/dists/$1/main/source/Sources.gz" \
+    "/var/www/dbd-apt/dists/$1/non-free/source/Sources.gz" \
+    | grep-dctrl -n -FPackage-List " $2 " -sPackage /dev/stdin

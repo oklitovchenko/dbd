@@ -1,0 +1,36 @@
+#!/bin/sh
+
+## Search and list all packages required to build queried package
+
+SELF="$0"
+usage(){
+    echo "Usage:"
+    echo "  $SELF -h/--help        - show this memo"
+    echo "  $SELF REPOSITORY PACKAGE"
+}
+
+while :; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit 1
+            ;;
+        *)
+            if [ -z "$1" -o -z "$2" ]; then
+                usage 1>&2
+                exit 1
+            fi
+            REPO="$1"
+            PKG="$2"
+            break
+            ;;
+    esac
+done
+
+zcat "/var/www/dbd-apt/dists/$REPO/main/source/Sources.gz" \
+    "/var/www/dbd-apt/dists/$REPO/non-free/source/Sources.gz" \
+    | grep-dctrl -e -n -FPackage "^$PKG\$" -sBuild-Depends /dev/stdin \
+    | sed -r 's/\([^)]+\)//g' \
+    | tr -d , \
+    | sed -r "s/\s+/ /g" \
+    | tr " " "\n"

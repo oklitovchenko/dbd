@@ -1,0 +1,47 @@
+#!/bin/sh
+
+## Search and list all packages that Build-Depends on queried package
+
+SELF="$0"
+usage(){
+    echo "Usage:"
+    echo "  $SELF -h/--help        - show this memo"
+    echo "  $SELF [-r] REPOSITORY PACKAGE"
+    echo "Valid options are:"
+    echo "  -r      - search recursively"
+}
+
+RECURSIVE=""
+
+while :; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit 1
+            ;;
+        -r)
+            RECURSIVE="-r"
+            shift
+            ;;
+        *)
+            if [ -z "$1" -o -z "$2" ]; then
+                usage 1>&2
+                exit 1
+            fi
+            REPO="$1"
+            PKG="$2"
+            break
+            ;;
+    esac
+done
+
+cat "/var/www/dbd-apt/dists/$REPO/main/binary-amd64/Packages" \
+    "/var/www/dbd-apt/dists/$REPO/non-free/binary-amd64/Packages" | \
+    grep-dctrl -n -FDepends "$PKG" -sPackage /dev/stdin | \
+    while LINE=`line`; do
+        echo "$LINE"
+        if [ -n "$RECURSIVE" ]; then
+            "$SELF" $RECURSIVE "$REPO" "$LINE"
+        fi
+    done | \
+        sort -u
