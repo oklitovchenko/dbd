@@ -2,7 +2,7 @@
 
 case "$1" in
     configure)
-        if [ ! -f /etc/dbd/apt/reprepro/distributions ]; then
+        if [ ! -f /etc/dbd/apt/distributions ]; then
             echo "------------------------"
             while true; do
                 read -p "Set project name (default: [MYPROJECT]): " PROJECT_NAME
