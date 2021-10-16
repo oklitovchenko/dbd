@@ -1,0 +1,5 @@
+bin/dbd-include /usr/bin
+bin/dbd-remove /usr/bin
+bin/dbd-removesrc /usr/bin
+bin/dbd-search-rdeps /usr/bin
+bin/dbd-search-rbdeps /usr/bin

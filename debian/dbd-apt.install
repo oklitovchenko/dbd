@@ -2,9 +2,4 @@ etc/nginx/dbd.default /etc/nginx/sites-available
 etc/sudoers.d/dbd-apt.dbd /etc/sudoers.d
 reprepro/distributions.default /etc/dbd/apt
 reprepro/options.default /etc/dbd/apt
-bin/dbd-include /usr/bin
-bin/dbd-remove /usr/bin
-bin/dbd-removesrc /usr/bin
-bin/dbd-search-rdeps /usr/bin
-bin/dbd-search-rbdeps /usr/bin
 www/index.html.default /var/www/dbd-apt

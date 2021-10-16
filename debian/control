@@ -21,3 +21,11 @@ Pre-Depends: adduser
 Conflicts: dbd
 Description: Environment for building DEB packages
  Environment for building DEB packages.
+
+Package: dbd-apt-helpers
+Architecture: all
+Depends: dbd-apt
+Pre-Depends:
+Conflicts:
+Description: Helpers scripts for APT Repository
+ Local helpers scripts for APT Repository.
