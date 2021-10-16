@@ -1,3 +1,11 @@
+dbd (2.1.0) unstable; urgency=low
+
+  * Add sudoers.d config to extract APT helpers scripts as separate package
+  * Refactor deb spec to extract APT helpers scripts as separate package
+  * Refactor to extract some scripts as a different package
+
+ -- Oleksii Klitovchenko <oleksii.klitovchenko@gmail.com>  Sat, 16 Oct 2021 20:15:11 +0300
+
 dbd (2.0.0) unstable; urgency=low
 
   * Add contributor's copyright (BSD License)
