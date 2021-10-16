@@ -1,5 +1,4 @@
 etc/nginx/dbd.default /etc/nginx/sites-available
-etc/sudoers.d/dbd-apt.dbd /etc/sudoers.d
 reprepro/distributions.default /etc/dbd/apt
 reprepro/options.default /etc/dbd/apt
 www/index.html.default /var/www/dbd-apt
