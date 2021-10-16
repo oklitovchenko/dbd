@@ -1,1 +1,3 @@
 verbose
+basedir /var/www/dbd-apt
+ignore wrongdistribution
