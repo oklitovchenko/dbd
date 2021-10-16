@@ -8,15 +8,15 @@ Homepage: https://github.com/klitovchenko/dbd
 
 Package: dbd-apt
 Architecture: all
-Depends: sudo, pbuilder, reprepro, dctrl-tools, nginx
-Pre-Depends: adduser
-Conflicts: dbd-apt
-Description: Environment for building DEB packages
- Environment for building DEB packages.
+Depends: reprepro, dctrl-tools, nginx
+Pre-Depends:
+Conflicts: dbd-apt, dbd
+Description: Environment for setup APT Repository
+ Environment for setup APT Repository.
 
 Package: dbd-build-node
 Architecture: all
-Depends: sudo, pbuilder, dctrl-tools
+Depends: sudo, pbuilder
 Pre-Depends: adduser
 Conflicts: dbd
 Description: Environment for building DEB packages
@@ -25,7 +25,7 @@ Description: Environment for building DEB packages
 Package: dbd-apt-helpers
 Architecture: all
 Depends: dbd-apt
-Pre-Depends:
-Conflicts:
+Pre-Depends: adduser
+Conflicts: dbd
 Description: Helpers scripts for APT Repository
  Local helpers scripts for APT Repository.
