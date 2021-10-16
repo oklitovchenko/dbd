@@ -1,0 +1,39 @@
+Codename: @@production@@
+Suite: production
+Architectures: amd64 i386 arm64 arm32 source
+Components: main non-free contrib
+Description: @@PROJECT@@ Production Release 1.0
+Contents:
+Log: @@production@@.log
+SignWith: @@SignWith@@
+
+Codename: @@staging@@
+Suite: staging
+AlsoAcceptFor: unstable
+Architectures: amd64 i386 arm64 arm32 source
+Components: main non-free contrib
+Description: @@PROJECT@@ Staging APT Repository
+Contents:
+Log: @@staging@@.log
+SignWith: @@SignWith@@
+Update: from-production
+
+Codename: @@prod-experimental@@
+Suite: prod-experimental
+AlsoAcceptFor: unstable
+Architectures: amd64 i386 arm64 arm32 source
+Components: main non-free contrib
+Description: @@PROJECT@@ Prod-based experimental APT Repository
+Contents:
+Log: @@prod-experimental@@.log
+SignWith: @@SignWith@@
+
+Codename: @@experimental@@
+Suite: experimental
+AlsoAcceptFor: unstable experimental
+Architectures: amd64 i386 arm64 arm32 source
+Components: main non-free contrib
+Description: @@PROJECT@@ Experimental APT Repository
+Contents:
+Log: @@experimental@@.log
+SignWith: @@SignWith@@
