@@ -21,3 +21,8 @@
 %dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd.conf
 %dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-production.conf
 %dbd ALL = NOPASSWD: /usr/sbin/pbuilder --login --configfile /etc/dbd/dbd-experimental.conf
+
+# Allow chroot upgrades
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd.conf /usr/share/dbd/upgrade.sh
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd-production.conf /usr/share/dbd/upgrade.sh
+%dbd ALL = NOPASSWD: /usr/sbin/pbuilder --execute --save-after-exec --configfile /etc/dbd/dbd-experimental.conf /usr/share/dbd/upgrade.sh
