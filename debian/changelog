@@ -1,3 +1,14 @@
+dbd (2.1.6) stable; urgency=low
+
+  * Fix debian/dbd-apt.postinst
+  * Fix etc/nginx/dbd.default to prevent wrong 404
+  * Add some reprepro options
+  * Add dbd-copy and dbd-copysrc to install script
+  * Add dbd-copy and dbd-copysrc scripts
+  * Fix dbd-include, dbd-remove and dbd-removesrc to correspond POSIX
+
+ -- Oleksii Klitovchenko <oleksii.klitovchenko@gmail.com>  Sun, 17 Oct 2021 01:19:48 +0300
+
 dbd (2.1.1) unstable; urgency=low
 
   * Refactor debian/control to set right descriptions and dependencies
