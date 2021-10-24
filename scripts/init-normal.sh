@@ -6,6 +6,8 @@
 ## is added to the experimental APT repository).
 ##
 
+export DEBIAN_FRONTEND=noninteractive
+
 APT_HOST=$1
 APT_KEY=$2
 
@@ -23,17 +25,11 @@ deb http://ftp.debian.org/debian buster-backports main
 EOF
 
 cat > /etc/apt/preferences.d/kindustries-keep.pref <<EOF
-Package: golang golang-go golang-src golang-doc
- golang-goprotobuf-dev golang-github-dgrijalva-jwt-go-dev
+Package: golang golang-*
 Pin: release a=buster-backports
 Pin-Priority: 500
 EOF
 
-export DEBIAN_FRONTEND=noninteractive
-
 apt-get update
 apt-get --purge --auto-remove -y -o 'Dpkg::Options::=--force-confnew' dist-upgrade
-apt-get install -y brz ca-certificates git mercurial subversion
-apt-get install -y golang golang-go golang-src golang-doc
-apt-get install -y golang-goprotobuf-dev golang-github-dgrijalva-jwt-go-dev
-apt-get install -y qt5-default
+apt-get install -y golang qt5-default
