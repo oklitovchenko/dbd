@@ -1,3 +1,11 @@
+dbd (2.1.7) stable; urgency=low
+
+  * Refactor init scripts
+  * Remove unnecessary comments
+  * Refactor etc/nginx/dbd.default
+
+ -- Oleksii Klitovchenko <oleksii.klitovchenko@gmail.com>  Sun, 24 Oct 2021 12:09:59 +0300
+
 dbd (2.1.6) stable; urgency=low
 
   * Fix debian/dbd-apt.postinst
